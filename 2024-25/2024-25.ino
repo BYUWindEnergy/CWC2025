@@ -8,7 +8,7 @@
 
 //  Global constants for pins
 //  Analog pins
-#define VOLTAGE_SENSOR A0
+#define VOLTAGE_SENSOR A1
 
 //At least one of these pins needs interrupt capability (pin 2)
 #define ENCODER_PIN_1 2
