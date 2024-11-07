@@ -74,7 +74,7 @@ unsigned long previousMillis = 0;
 #define ANALOG_RANGE 1023.0
 
 // Transition RPM values
-#define CUT_IN_RPM 300
+#define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
 #define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
@@ -255,7 +255,7 @@ void loop() {
         delay(1000);
         SetBrake(BRAKE_DISENGAGED);
         Serial.println("Disengaging brake...");
-        delay(2000);
+        delay(2000); //I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
 
         //If we're getting an RPM reading, the load must be connected. Transition out
         if(ReadRPM() >= CUT_IN_RPM) {
