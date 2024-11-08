@@ -255,7 +255,7 @@ void loop() {
         delay(1000);
         SetBrake(BRAKE_DISENGAGED);
         Serial.println("Disengaging brake...");
-        delay(2000); //I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
+        delay(5000); //I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
 
         //If we're getting an RPM reading, the load must be connected. Transition out
         if(ReadRPM() >= CUT_IN_RPM) {
@@ -787,6 +787,7 @@ void SetupPins() {
   pinMode(BRAKE_CONTROL, OUTPUT);
   pinMode(PITCH_CONTROL, OUTPUT);
   pinMode(E_BUTTON, INPUT_PULLUP);
+  //digitalWrite(E_BUTTON, HIGH); is e button continues not working, switch to setting up the pin this
   pinMode(VOLTAGE_SENSOR, INPUT);
   pinMode(POWER_SWITCH_RELAY, OUTPUT);
   bool setExternal = true;
