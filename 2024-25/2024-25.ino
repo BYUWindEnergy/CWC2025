@@ -8,7 +8,7 @@
 
 //  Global constants for pins
 //  Analog pins
-#define VOLTAGE_SENSOR A0
+#define VOLTAGE_SENSOR A1
 
 //At least one of these pins needs interrupt capability (pin 2)
 #define ENCODER_PIN_1 2
@@ -60,21 +60,21 @@ unsigned long previousMillis = 0;
 #define BRAKE_ENGAGED 1225
 
 // Resistor bank constants
-#define LOAD_RESISTOR_RESISTANCE 220.0
+#define LOAD_RESISTOR_RESISTANCE 150.0
 #define LOAD_UNSHORTED 0
 #define LOAD_SHORTED 1
 #define MINIMUM_RESISTANCE 0
 #define MAXIMUM_RESISTANCE 440.0
 #define DISCONNECT_VOLTAGE 0.5
-#define SMALL_READER_RESISTOR 38000.0
-#define LARGE_READER_RESISTOR 380000.0
+#define SMALL_READER_RESISTOR 39000.0
+#define LARGE_READER_RESISTOR 390000.0
 
 //Arduino Mega global constants
 #define OPERATING_VOLTAGE 5.0
 #define ANALOG_RANGE 1023.0
 
 // Transition RPM values
-#define CUT_IN_RPM 300
+#define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
 #define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
@@ -255,7 +255,7 @@ void loop() {
         delay(1000);
         SetBrake(BRAKE_DISENGAGED);
         Serial.println("Disengaging brake...");
-        delay(2000);
+        delay(5000); //I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
 
         //If we're getting an RPM reading, the load must be connected. Transition out
         if(ReadRPM() >= CUT_IN_RPM) {
@@ -787,6 +787,7 @@ void SetupPins() {
   pinMode(BRAKE_CONTROL, OUTPUT);
   pinMode(PITCH_CONTROL, OUTPUT);
   pinMode(E_BUTTON, INPUT_PULLUP);
+  //digitalWrite(E_BUTTON, HIGH); is e button continues not working, switch to setting up the pin this
   pinMode(VOLTAGE_SENSOR, INPUT);
   pinMode(POWER_SWITCH_RELAY, OUTPUT);
   bool setExternal = true;
