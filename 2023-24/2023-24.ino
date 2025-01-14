@@ -1,5 +1,5 @@
 //Include necessary libraries
-#include "ms4525do.h" //Bolder Flight Systems MS4525 by Brian Taylor
+// #include "ms4525do.h" //Bolder Flight Systems MS4525 by Brian Taylor
 #include <Servo.h> //PWMServo by Jim Studt et al.
 #include <Encoder.h> //Encoder by Paul Stoffregen
 #include <LiquidCrystal_I2C.h> //LiquidCrystal I2C by Frank de Brabander
@@ -114,7 +114,7 @@ Servo brakeActuator;
 Encoder encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 
 //Pressure sensor
-bfs::Ms4525do pressureSensor;
+float pressureSensor;
 
 //Variable load object
 VariableLoad resistorBank(SW0, SW1, SW2, SW3, SW4, SW5, SW6, SW7, SW_PARALLEL, SW_SHORT, LOAD_RESISTOR_RESISTANCE);
@@ -1022,24 +1022,24 @@ void CalibratePitotTube() {
   float pressureArray[3];
 
   // Read 3 wind speeds and pressures to calibrate
-  for(int i = 0; i < 3; i++) {
-    // Get the wind speed and store in the array
-    windSpeedArray[i] = InputWindSpeed();
+  // for(int i = 0; i < 3; i++) {
+  //   // Get the wind speed and store in the array
+  //   windSpeedArray[i] = InputWindSpeed();
 
-    // Average 1000 pressure readings to get a pressure at that wind speed
-    float pressureSum = 0.0;
-    int j = 0;
-    int k = 0;
-    for (j = 0; j < 1000; j++) {
-      if(pressureSensor.Read()) {
-        k++;
-        float currReading = pressureSensor.pres_pa();
+  //   // Average 1000 pressure readings to get a pressure at that wind speed
+  //   float pressureSum = 0.0;
+  //   int j = 0;
+  //   int k = 0;
+  //   for (j = 0; j < 1000; j++) {
+  //     if(pressureSensor.Read()) {
+  //       k++;
+  //       float currReading = pressureSensor.pres_pa();
         
 
         
-        pressureSum += currReading;
-      }
-    }
+  //       pressureSum += currReading;
+  //     }
+  //   }
     Serial.print("Pressure Sum: ");
     Serial.println(pressureSum);
     float pressureAverage = pressureSum / k;
