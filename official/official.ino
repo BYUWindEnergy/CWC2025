@@ -932,9 +932,21 @@ void SelectTest() {
 }
 
 void SetLoad(float resistance) { 
-  // WORK ON THIS PORTION ***********************************************************************************************************************************
   //TODO: Check with power to make sure this is the best way to do this
-  resistorBank.setBestResistanceMatch(resistance);
+  // resistorBank.setBestResistanceMatch(resistance);
+
+  // WORK ON THIS PORTION ***********************************************************************************************************************************
+  // Set all the channels off
+  int load_i = 0;
+  for (int i = 14; i <= 20; i++) { // goes through pins 14-20
+    digitalWrite(load_i, LOW);
+    load_i++;
+  }
+
+  // Set the wanted one on
+  sprintf(message, "Current load resistance is %.2f", resistance);
+  Serial.println(message);
+  digitalWrite()
 }
 
 //Write desired data to the LCD

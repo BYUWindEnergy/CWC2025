@@ -75,7 +75,7 @@ unsigned long previousMillis = 0;
 
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 3000 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 // LCD variables
