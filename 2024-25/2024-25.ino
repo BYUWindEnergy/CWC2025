@@ -846,13 +846,18 @@ float ReadRPM() {
   
     if(newPosition != oldPosition) {
       long newTime = micros();
-      float dtheta = newPosition - oldPosition;
+      float dtheta = abs(newPosition - oldPosition); 
+      // if (abs(dtheta) > 2048/2) {
+      //   dtheta = (dtheta > 0) ? dtheta - 2048 : dtheta + 2048;
+      // }
       float dt = newTime - oldTime;
       oldPosition = newPosition;
       oldTime = newTime;
 
-      //1000000*60 converts time from microseconds to minutes, 2048 converts dx to rotations
-      rpm = (dtheta * 1000000 * 60) / (dt * 2048);
+      //1000000*60 converts time from microseconds to minutes, 500*4 converts dx to rotations
+      rpm = (dtheta * 1000000 * 60) / (dt * 500 * 4);
+
+      Serial.println(String(rpm) + "   " + String(dtheta) + "   " + String(dt))
       
       sumRPM += rpm;
     }
