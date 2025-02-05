@@ -65,8 +65,8 @@ unsigned long previousMillis = 0;
 
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-int resistor_list = {5,5,5,5,5,5,6,7,8,9,10,11};
-int rpm_list = {5,5,5,5,5,5,6,7,8,9,10,11};
+float resistor_list[] = {5,5,5,5,5,5,6,7,8,9,10,11};
+float rpm_list[] = {5,5,5,5,5,5,6,7,8,9,10,11};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
@@ -306,7 +306,7 @@ void loop() {
     {
       // Set the load depending on the rpm reading
       // The numbers correlate to the wind speed - resistor value
-      rpm = ReadRPM();
+      float rpm = ReadRPM();
       if (rpm < rpm_list[6]) {
         SetLoad(5);
         currentWindSpeed = 5;
@@ -627,7 +627,7 @@ void loop() {
         while(!Serial.available()) {
         }
         String input = Serial.readStringUntil('\n');
-        float wind_speed = input.toFloat();
+        int wind_speed = input.toInt();
 
         //Set the load to the input value
         if(wind_speed >= 5 && wind_speed <= 11) {
@@ -650,8 +650,7 @@ void loop() {
       case read_load:
       {
         char message[100];
-        resistor = ReadLoad();
-        sprintf(message, "Resistance is set to %.2f Ohms", resistor);
+        sprintf(message, "Resistance is set to %.2f Ohms", ReadLoad());
         Serial.println(message);
         break;
       }
@@ -872,7 +871,7 @@ float ReadLoad() {
   for (int i = 15; i <= 21; i++) { // goes through pins 15-21
     int relayState = digitalRead(i);
     if (relayState == HIGH) {
-      resistance = resistor_list[load_i];
+      float resistance = resistor_list[load_i];
       sprintf(message, "Current load resistance is %.2f", resistance);
       Serial.println(message);
       return resistance;
@@ -883,7 +882,6 @@ float ReadLoad() {
   if (load_i == 11) {
     Serial.println("Error: No relay is HIGH");
   }
-  break;
 }
 
 void SetLoad(int wind_speed) {
@@ -896,6 +894,7 @@ void SetLoad(int wind_speed) {
   // Set the wanted one 'on' - windspeed can be 5-11, so this can write for pins 15-21
   digitalWrite(10 + wind_speed, HIGH);
 
+  char message[100];
   sprintf(message, "Current load resistance is %.2f", resistor_list[wind_speed]);
   Serial.println(message);
 }
