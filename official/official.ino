@@ -13,8 +13,7 @@
 //  Analog pins
 #define VOLTAGE_SENSOR A1
 
-//Encoder
-Encoder encoder(ENCODER_PIN_1, ENCODER_PIN_2);
+// Encoder channel index
 #define ENCODER_PIN_INDEX 2
 
 //  PWM pins
