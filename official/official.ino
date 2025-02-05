@@ -1,6 +1,6 @@
-// LEFT OFF HERE 2/4/25
-// - Short load
+// Discuss:
 // - PCC : whether we need to add a delay / button
+// - Add the newREvolution function for the readrpm
 
 // Libraries
 #include <Wire.h> //Default library (uses pinMode, etc.)
@@ -13,9 +13,9 @@
 //  Analog pins
 #define VOLTAGE_SENSOR A1
 
-//At least one of these pins needs interrupt capability (pin 2)
+//Encoder
+Encoder encoder(ENCODER_PIN_1, ENCODER_PIN_2);
 #define ENCODER_PIN_INDEX 2
-#define ENCODER_PIN_A 6
 
 //  PWM pins
 #define BRAKE_CONTROL 4
@@ -24,17 +24,14 @@
 #define POWER_SWITCH_RELAY 28
 #define E_BUTTON 44
 
-//These pins need no special capabilities for resistors
-#define SW_SHORT 45
-#define SW_PARALLEL 39
-#define SW0 37
-#define SW1 35
-#define SW2 33
-#define SW3 31
-#define SW4 29
-#define SW5 27
-#define SW6 25
-#define SW7 23
+// Relay module switches for resistors
+// #define SW0 37
+// #define SW1 35
+// #define SW2 33
+// #define SW3 31
+// #define SW4 29
+// #define SW5 27
+// #define SW6 25
 #define E_BUTTON 44
 #define POWER_SWITCH_RELAY 28
 
@@ -62,27 +59,29 @@ unsigned long previousMillis = 0;
 #define BRAKE_DISENGAGED 1450
 #define BRAKE_ENGAGED 1225
 
-// Resistor bank constants
-// #define LOAD_RESISTOR_RESISTANCE 150.0
-// #define LOAD_UNSHORTED 0
-// #define LOAD_SHORTED 1
-#define MINIMUM_RESISTANCE 0
-#define MAXIMUM_RESISTANCE 14 //440
-// #define DISCONNECT_VOLTAGE 0.5
-// #define SMALL_READER_RESISTOR 39000.0
-// #define LARGE_READER_RESISTOR 390000.0
-#define LOAD_RESISTOR 20
+// Voltage divider constants
+#define DISCONNECT_VOLTAGE 0.5
+#define SMALL_READER_RESISTOR 39000.0 // check these values
+#define LARGE_READER_RESISTOR 390000.0 // check these values
+
+// Resistor and rpm lists
+// wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
 int resistor_list = {5,5,5,5,5,5,6,7,8,9,10,11};
 int rpm_list = {5,5,5,5,5,5,6,7,8,9,10,11};
+
+// ToDo: might be able to erase bc of the rpm list
+// Transition RPM values
+#define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
+#define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
 #define OPERATING_VOLTAGE 5.0
 #define ANALOG_RANGE 1023.0
 
-// Transition RPM values
-#define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
-#define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
+//Servos (linear actuators)
+Servo pitchActuator;
+Servo brakeActuator;
 
 // LCD variables
 LiquidCrystal_I2C lcd(0x3f, 20, 4);
@@ -128,17 +127,18 @@ typedef enum {
 //Variable to keep track of current test state
 testStateMachine testState = test_select;
 
-//Servos (linear actuators)
-Servo pitchActuator;
-Servo brakeActuator;
+// Variables for the ReadRPM
+volatile unsigned long lastIndexTime = 0;
+volatile unsigned long currentIndexTime = 0;
+volatile bool newRevolution = false;
 
-//Encoder
-Encoder encoder(ENCODER_PIN_1, ENCODER_PIN_2);
-
-//Variable load object
-VariableLoad resistorBank(SW0, SW1, SW2, SW3, SW4, SW5, SW6, SW7, SW_PARALLEL, SW_SHORT, LOAD_RESISTOR_RESISTANCE);
-// will want to erase -------------------------------------------------------------------------------------------------
-
+// Linked with ReadRPM
+// If there is an interrupt in the index channel of encoder, it will come here
+void indexISR() {
+  lastIndexTime = currentIndexTime;
+  currentIndexTime = micros();
+  newRevolution = true;
+}
 
 void setup() {
   Serial.begin(9600);  // Set baud rate to 9600 bit/s
@@ -154,6 +154,9 @@ void setup() {
   Serial.println("Servos are set up.");
   SetUpLoad();
   Serial.println("Load is set up.");
+
+  pinMode(ENCODER_PIN_INDEX, INPUT);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_PIN_INDEX), indexISR, RISING);
 
   delay(3000); // Wait 3 seconds for linear actuators to reach correct positions
 
@@ -234,7 +237,7 @@ void loop() {
         previousPitch = currentPitch;
       }
 
-      // TEST WHETHER WE WANT A DIFF WAY TO EXIT W/ LOWER RPM
+      // TODO: TEST WHETHER WE WANT A DIFF WAY TO EXIT W/ LOWER RPM
       if(ReadRPM() < SURVIVAL_EXIT_RPM) {
         operatingState = power_curve;
       }
@@ -302,23 +305,32 @@ void loop() {
 
     case power_curve:
     {
+      // Set the load depending on the rpm reading
+      // The numbers correlate to the wind speed - resistor value
       rpm = ReadRPM();
       if (rpm < rpm_list[6]) {
         SetLoad(5);
+        currentWindSpeed = 5;
       } else if (rpm >= rpm_list[6] && rpm < rpm_list[7]) {
         SetLoad(6);
+        currentWindSpeed = 6;
       } else if (rpm >= rpm_list[7] && rpm < rpm_list[8]) {
         SetLoad(7);
+        currentWindSpeed = 7;
       } else if (rpm >= rpm_list[8] && rpm < rpm_list[9]) {
         SetLoad(8);
+        currentWindSpeed = 8;
       } else if (rpm >= rpm_list[9] && rpm < rpm_list[10]) {
         SetLoad(9);
+        currentWindSpeed = 9;
       } else if (rpm >= rpm_list[10] && rpm < rpm_list[11]) {
         SetLoad(10);
+        currentWindSpeed = 10;
       } else if (rpm >= rpm_list[11]) {
         SetLoad(11);
+        currentWindSpeed = 11;
       } else {
-        SetLoad(11);
+        SetLoad(11); // Set to 11 to have the highest resistance in case something goes wrong
       }
 
       //Change power to internal
@@ -611,17 +623,16 @@ void loop() {
 
       case set_load:
       {
-        // WILL HAVE TO CHANGE BTW 2 RESISTOR VALUES WE FIND OPTIMAL
         //Get input from the serial monitor based on the prompt
-        Serial.println("Enter a resistance value between 0 and 14 Ohms");
+        Serial.println("Enter the wind speed you want the resistance of (between 5-11m/s)");
         while(!Serial.available()) {
         }
         String input = Serial.readStringUntil('\n');
-        float resistance = input.toFloat();
+        float wind_speed = input.toFloat();
 
         //Set the load to the input value
-        if(resistance >= MINIMUM_RESISTANCE && resistance <= MAXIMUM_RESISTANCE) {
-          SetLoad(resistance);
+        if(wind_speed >= 5 && wind_speed <= 11) {
+          SetLoad(wind_speed);
         }
 
         //If the output is invalid, return to the test state
@@ -632,15 +643,18 @@ void loop() {
 
         //Print out the resistance value
         char message[100];
-        sprintf(message, "Load resistance set to closest match of %.2f Ohms", resistance);
+        sprintf(message, "Resistance set to %.2f Ohms", resistor_list[wind_speed]);
         Serial.println(message);
         break;
       }
 
-
       case read_load:
       {
-        ReadLoad();
+        char message[100];
+        resistor = ReadLoad();
+        sprintf(message, "Resistance is set to %.2f Ohms", resistor);
+        Serial.println(message);
+        break;
       }
 
       //Test emergency stop when the emergency button is pressed
@@ -680,10 +694,6 @@ void loop() {
       {
          //Pitch blades out of the wind
         SetPitch(SURVIVAL_PITCH);
-        //Short the Motor
-        resistorBank.shortLoad(LOAD_SHORTED);
-        //TODO: Ask Power Team about using this function, how do we short the motor
-        //SetLoad(SHORTING_RESISTANCE);
         
         break;
       }
@@ -721,9 +731,9 @@ void SetUpPins() {
   bool setExternal = true;
   SetPowerMode(setExternal);
 
-  // Relay module for load resistors ***********************************************************************************************
-  // Can define the pin numbers up top: 14=SW0, 20=SW6
-  for (int i = 14; i <= 20; i++) {
+  // Relay module for load resistors
+  // Can define the pin numbers up top: 15=SW0, 21=SW6
+  for (int i = 15; i <= 21; i++) {
     pinMode(i, INPUT_PULLUP);
   }
 }
@@ -756,9 +766,7 @@ void SetUpServos() {
 }
 
 void SetUpLoad() {
-  //Make sure the load isn't shorted
-  resistorBank.shortLoad(LOAD_UNSHORTED);
-  SetLoad(MINIMUM_RESISTANCE);
+  SetLoad(resistor_list[5]); // 5m/s resistor
 }
 
 //Reads whether the emergency stop button is pressed. Returns true if pressed, false if not
@@ -768,6 +776,7 @@ bool IsButtonPressed() {
 
 float ReadRPM() {
   // TODO: Deal with crazy outputs at sub 300 RPM
+  // TODO: Input the other function for the newRevolution
   static float rpm = 0;
   static float prevRPM = 0;
   
@@ -795,9 +804,7 @@ bool IsLoadConnected() {
 }
 
 //Sets the brake linear actuator to a given position
-void SetBrake(int brakePosition) {
-  //We might need to flip a switch to turn on the actuator
-  
+void SetBrake(int brakePosition) {  
   //Set the servo to the desired angle
   brakeActuator.writeMicroseconds(brakePosition);
   if(brakePosition == BRAKE_ENGAGED) {
@@ -810,8 +817,6 @@ void SetBrake(int brakePosition) {
 
 //Sets the pitch linear actuator to a given position
 void SetPitch(int pitchAngle){
-  //We might need to flip a switch to turn on the actuator
-
   //Set the servo to the desired angle
   pitchActuator.writeMicroseconds(pitchAngle);
   currentPitch = pitchAngle;
@@ -823,7 +828,6 @@ float CalculatePower() {
   float voltage = ReadVoltage();
 
   //Read the resistance from the resistor bank
-  // Change this --------------------------------------------------------------------------------------------------------------------------------
   float resistance = ReadLoad();
 
   //Calculate and return the power
@@ -859,6 +863,123 @@ int ReadInputInt() {
   }
   
   return inputInt;
+}
+
+float ReadLoad() {
+  //Get the resistance from the load
+  // Loop through relays to see which one is "on"
+  int load_i = 5;
+  char message[100];
+  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
+    int relayState = digitalRead(i);
+    if (relayState == HIGH) {
+      resistance = resistor_list[load_i];
+      sprintf(message, "Current load resistance is %.2f", resistance);
+      Serial.println(message);
+      return resistance;
+    }
+    load_i++;
+  }
+
+  if (load_i == 11) {
+    Serial.println("Error: No relay is HIGH");
+  }
+  break;
+}
+
+void SetLoad(int wind_speed) {
+  // Set all the relays off
+  int load_i = 0;
+  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
+    digitalWrite(i, LOW);
+  }
+
+  // Set the wanted one 'on' - windspeed can be 5-11, so this can write for pins 15-21
+  digitalWrite(10 + wind_speed, HIGH);
+
+  sprintf(message, "Current load resistance is %.2f", resistor_list[wind_speed]);
+  Serial.println(message);
+}
+
+//Write data to the LCD screen
+void WriteToLCD() {
+  lcd.clear(); // Clear the LCD screen
+  
+  //Write the current state
+  lcd.setCursor(0, 0);
+  lcd.print("Current State: ");
+
+  if(operatingState == restart) {
+    lcd.print("restart");
+  } else if(operatingState == power_curve) {
+    lcd.print("power curve");
+  } else if(operatingState == survival) {
+    lcd.print("survival");
+  } else if(operatingState == emergency_stop) {
+    lcd.print("shutdown");
+  } else if(operatingState == test) {
+  
+    if(testState == test_select) {
+      lcd.print("test select");
+    } else if(testState == power_select) {
+      lcd.print("power select");
+    } else if(testState == brake) {
+      lcd.print("brake test");
+    } else if(testState == pitch) {
+      lcd.print("pitch test");
+    } else if(testState == read_voltage) {
+      lcd.print("read voltage");
+    } else if(testState == read_power) {
+      lcd.print("read power");
+    } else if(testState == read_rpm) {
+      lcd.print("read rpm");
+    } else if(testState == set_load) {
+      lcd.print("set load");
+    } else if(testState == read_load) {
+      lcd.print("read load");
+    } else if(testState == emergency_button) {
+      lcd.print("e button");
+    } else if(testState == load_disconnect) {
+      lcd.print("load discon");
+    } else if(testState == survival_test) {
+      lcd.print("survival test");
+    } else if(testState == power_curve_test) {
+      lcd.print("pwr crve test");
+    } else if(testState == exit_test) {
+      lcd.print("exiting test ");
+    }
+  }
+
+  //Write the wind speed (WS)
+  lcd.setCursor(0, 1);
+  lcd.print("WS: ");
+  lcd.print(currentWindSpeed);
+
+  //Write the turbine RPM
+  lcd.setCursor(10, 1);
+  lcd.print("RPM: ");
+  lcd.print(currentRPM);
+
+  //Write the pitch "angle"
+  lcd.setCursor(0, 2);
+  lcd.print((char)224);
+  lcd.print(": ");
+  lcd.print(currentPitch);
+
+  //Write the brake state
+  lcd.setCursor(10, 2);
+  lcd.print("Brake: ");
+  lcd.print(brakeState);
+
+  //Write the power output
+  lcd.setCursor(0, 3);
+  lcd.print("Pwr: ");
+  lcd.print(currentPower);
+
+  //Write the current power source
+  lcd.setCursor(10, 3);
+  lcd.print("Src: ");
+  lcd.print(powerSource);
 }
 
 //Selects a test state based on manual user input
@@ -921,122 +1042,4 @@ void SelectTest() {
   if(input.equals("exit")) {
     testState = exit_test;
   }
-}
-
-void ReadLoad() {
-  //Get the resistance from the load
-  // Loop through relays to see which one is "on" ************************************************************************************
-  int load_i = 5;
-  char message[100];
-  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
-    int relayState = digitalRead(i);
-    if (relayState == HIGH) {
-      resistance = resistor_list[load_i];
-      sprintf(message, "Current load resistance is %.2f", resistance);
-      Serial.println(message);
-      break;
-    }
-    load_i++;
-  }
-
-  if (load_i == 11) {
-    Serial.println("Error: No relay is HIGH");
-  }
-  break;
-}
-
-void SetLoad(int sw_pos) {
-  // WORK ON THIS PORTION ***********************************************************************************************************************************
-  // Set all the relays off
-  int load_i = 0;
-  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
-    digitalWrite(i, LOW);
-  }
-
-  // Set the wanted one on - sw_pos can be 5-11, so this can write for 15-21
-  digitalWrite(10 + sw_pos, HIGH);
-
-  sprintf(message, "Current load resistance is %.2f", resistor_list[sw_pos]);
-  Serial.println(message);
-}
-
-//Write data to the LCD screen
-void WriteToLCD() {
-  lcd.clear(); // Clear the LCD screen
-  
-  //Write the current state
-  lcd.setCursor(0, 0);
-  lcd.print("Current State: ");
-
-  if(operatingState == restart) {
-    lcd.print("restart");
-  } else if(operatingState == power_curve) {
-    lcd.print("power curve");
-  } else if(operatingState == survival) {
-    lcd.print("survival");
-  } else if(operatingState == emergency_stop) {
-    lcd.print("shutdown");
-  } else if(operatingState == test) {
-  
-    if(testState == test_select) {
-      lcd.print("test select");
-    } else if(testState == power_select) {
-      lcd.print("power select");
-    } else if(testState == brake) {
-      lcd.print("brake test");
-    } else if(testState == pitch) {
-      lcd.print("pitch test");
-    } else if(testState == read_voltage) {
-      lcd.print("read voltage");
-    } else if(testState == read_power) {
-      lcd.print("read power");
-    } else if(testState == read_rpm) {
-      lcd.print("read rpm");
-    } else if(testState == set_load) {
-      lcd.print("set load");
-    } else if(testState == read_load) {
-      lcd.print("read load");
-    } else if(testState == emergency_button) {
-      lcd.print("e button");
-    } else if(testState == load_disconnect) {
-      lcd.print("load discon");
-    } else if(testState == survival_test) {
-      lcd.print("survival test");
-    } else if(testState == power_curve_test) {
-      lcd.print("pwr crve test");
-    } else if(testState == exit_test) {
-      lcd.print("exiting test ");
-    }
-  }
-
-  //Write the wind speed (U)
-  lcd.setCursor(0, 1);
-  lcd.print("U: ");
-  lcd.print(currentWindSpeed);
-
-  //Write the turbine RPM
-  lcd.setCursor(10, 1);
-  lcd.print("RPM: ");
-  lcd.print(currentRPM);
-
-  //Write the pitch "angle"
-  lcd.setCursor(0, 2);
-  lcd.print((char)224);
-  lcd.print(": ");
-  lcd.print(currentPitch);
-
-  //Write the brake state
-  lcd.setCursor(10, 2);
-  lcd.print("Brake: ");
-  lcd.print(brakeState);
-
-  //Write the power output
-  lcd.setCursor(0, 3);
-  lcd.print("Pwr: ");
-  lcd.print(currentPower);
-
-  //Write the current power source
-  lcd.setCursor(10, 3);
-  lcd.print("Src: ");
-  lcd.print(powerSource);
 }
