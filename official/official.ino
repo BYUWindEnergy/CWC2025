@@ -7,7 +7,7 @@
 #include <string.h> //Default library (for printing strings)
 #include <LiquidCrystal_I2C.h> //LiquidCrystal I2C by Frank de Brabander
 #include <Servo.h> //PWMServo by Jim Studt et al.
-#include <Encoder.h> //Encoder by Paul Stoffregen
+//#include <Encoder.h> //Encoder by Paul Stoffregen
 
 //  Global constants for pins
 //  Analog pins
@@ -777,15 +777,19 @@ float ReadRPM() {
   // TODO: Input the other function for the newRevolution
   static float rpm = 0;
   static float prevRPM = 0;
-  
-  if (newRevolution) {
-    newRevolution = false;
-    unsigned long timeInterval = currentIndexTime - lastIndexTime;
-    if (timeInterval > 0) {
-      rpm = (60.0 * 1000000.0) / timeInterval;
-        Serial.println(rpm);
-    }
+
+   if (newRevolution) {
+     newRevolution = false;
+     unsigned long timeInterval = currentIndexTime - lastIndexTime;
+     if (timeInterval > 0) {
+       rpm = (60.0 * 1000000.0) / timeInterval;
+         Serial.println(rpm);
+     }
+   }
+  if (rpm > 4000) {
+    rpm = prevRPM;
   }
+  prevRPM = rpm;
   return(rpm);
 }
 
