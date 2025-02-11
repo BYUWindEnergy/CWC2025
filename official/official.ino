@@ -71,7 +71,7 @@ float rpm_list[] = {5,5,5,5,5,5,6,7,8,9,10,11};
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 3000 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
@@ -773,7 +773,6 @@ bool IsButtonPressed() {
 }
 
 float ReadRPM() {
-  // TODO: Deal with crazy outputs at sub 300 RPM
   // TODO: Input the other function for the newRevolution
   static float rpm = 0;
   static float prevRPM = 0;
