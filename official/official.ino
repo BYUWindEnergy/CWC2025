@@ -711,7 +711,7 @@ void SetUpPins() {
   // Relay module for load resistors
   // Can define the pin numbers up top: 15=SW0, 21=SW6
   for (int i = 15; i <= 21; i++) {
-    pinMode(i, INPUT_PULLUP);
+    pinMode(i, OUTPUT);
   }
 }
 
@@ -765,22 +765,6 @@ void indexISR() {
 }
 
 float ReadRPM() {
-<<<<<<< HEAD
-  // TODO: Deal with crazy outputs at sub 300 RPM
-  static float rpm = 0;
-  static float prevRPM = 0;
-  
-  if (newRevolution) {
-    newRevolution = false;
-    unsigned long timeInterval = currentIndexTime - lastIndexTime;
-    if (timeInterval > 0) {
-      rpm = (60.0 * 1000000.0) / timeInterval;
-        // Serial.println(rpm);
-    }
-  }
-  return rpm;
-=======
-  // TODO: Input the other function for the newRevolution
   static float rpm = 0;
   static float prevRPM = 0;
 
@@ -797,7 +781,6 @@ float ReadRPM() {
   }
   prevRPM = rpm;
   return(rpm);
->>>>>>> refs/remotes/origin/main
 }
 
 //Reads whether the load is connected. Returns true if connected and false if not
