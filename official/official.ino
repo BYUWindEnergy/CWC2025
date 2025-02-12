@@ -6,7 +6,7 @@
 #include <string.h> //Default library (for printing strings)
 #include <LiquidCrystal_I2C.h> //LiquidCrystal I2C by Frank de Brabander
 #include <Servo.h> //PWMServo by Jim Studt et al.
-#include <Encoder.h> //Encoder by Paul Stoffregen
+//#include <Encoder.h> //Encoder by Paul Stoffregen
 
 //  Global constants for pins
 //  Analog pins
@@ -63,7 +63,7 @@ float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,500.0,600.0,700.0,800.0,900.0,1000.0,110
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 1500 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 3000 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
@@ -765,6 +765,7 @@ void indexISR() {
 }
 
 float ReadRPM() {
+<<<<<<< HEAD
   // TODO: Deal with crazy outputs at sub 300 RPM
   static float rpm = 0;
   static float prevRPM = 0;
@@ -778,6 +779,25 @@ float ReadRPM() {
     }
   }
   return rpm;
+=======
+  // TODO: Input the other function for the newRevolution
+  static float rpm = 0;
+  static float prevRPM = 0;
+
+   if (newRevolution) {
+     newRevolution = false;
+     unsigned long timeInterval = currentIndexTime - lastIndexTime;
+     if (timeInterval > 0) {
+       rpm = (60.0 * 1000000.0) / timeInterval;
+         Serial.println(rpm);
+     }
+   }
+  if (rpm > 4000) {
+    rpm = prevRPM;
+  }
+  prevRPM = rpm;
+  return(rpm);
+>>>>>>> refs/remotes/origin/main
 }
 
 //Reads whether the load is connected. Returns true if connected and false if not
