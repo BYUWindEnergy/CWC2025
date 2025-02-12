@@ -1,6 +1,5 @@
 // Discuss:
 // - PCC : whether we need to add a delay / button
-// - Add the newREvolution function for the readrpm
 
 // Libraries
 #include <Wire.h> //Default library (uses pinMode, etc.)
@@ -24,13 +23,6 @@
 #define E_BUTTON 44
 
 // Relay module switches for resistors
-// #define SW0 37
-// #define SW1 35
-// #define SW2 33
-// #define SW3 31
-// #define SW4 29
-// #define SW5 27
-// #define SW6 25
 #define E_BUTTON 44
 #define POWER_SWITCH_RELAY 28
 
@@ -65,8 +57,8 @@ unsigned long previousMillis = 0;
 
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-float resistor_list[] = {5,5,5,5,5,5,6,7,8,9,10,11};
-float rpm_list[] = {5,5,5,5,5,5,6,7,8,9,10,11};
+float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
+float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,500.0,600.0,700.0,800.0,900.0,1000.0,1100.0};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
@@ -125,19 +117,6 @@ typedef enum {
 
 //Variable to keep track of current test state
 testStateMachine testState = test_select;
-
-// Variables for the ReadRPM
-volatile unsigned long lastIndexTime = 0;
-volatile unsigned long currentIndexTime = 0;
-volatile bool newRevolution = false;
-
-// Linked with ReadRPM
-// If there is an interrupt in the index channel of encoder, it will come here
-void indexISR() {
-  lastIndexTime = currentIndexTime;
-  currentIndexTime = micros();
-  newRevolution = true;
-}
 
 void setup() {
   Serial.begin(9600);  // Set baud rate to 9600 bit/s
@@ -641,9 +620,9 @@ void loop() {
         }
 
         //Print out the resistance value
-        char message[100];
-        sprintf(message, "Resistance set to %.2f Ohms", resistor_list[wind_speed]);
-        Serial.println(message);
+        // char message[100];
+        // sprintf(message, "Resistance set to %.2f Ohms", resistor_list[wind_speed]);
+        // Serial.println(message);
         break;
       }
 
@@ -764,7 +743,7 @@ void SetUpServos() {
 }
 
 void SetUpLoad() {
-  SetLoad(resistor_list[5]); // 5m/s resistor
+  SetLoad(5); // 5m/s resistor
 }
 
 //Reads whether the emergency stop button is pressed. Returns true if pressed, false if not
@@ -772,9 +751,21 @@ bool IsButtonPressed() {
   return digitalRead(E_BUTTON);
 }
 
+// Variables for the ReadRPM
+volatile unsigned long lastIndexTime = 0;
+volatile unsigned long currentIndexTime = 0;
+volatile bool newRevolution = false;
+
+// Used for ReadRPM
+// If there is an interrupt in the index channel of encoder, it will come here and set newRevolution to true
+void indexISR() {
+  lastIndexTime = currentIndexTime;
+  currentIndexTime = micros();
+  newRevolution = true;
+}
+
 float ReadRPM() {
   // TODO: Deal with crazy outputs at sub 300 RPM
-  // TODO: Input the other function for the newRevolution
   static float rpm = 0;
   static float prevRPM = 0;
   
@@ -783,10 +774,10 @@ float ReadRPM() {
     unsigned long timeInterval = currentIndexTime - lastIndexTime;
     if (timeInterval > 0) {
       rpm = (60.0 * 1000000.0) / timeInterval;
-        Serial.println(rpm);
+        // Serial.println(rpm);
     }
   }
-  return(rpm);
+  return rpm;
 }
 
 //Reads whether the load is connected. Returns true if connected and false if not
@@ -864,39 +855,40 @@ int ReadInputInt() {
 }
 
 float ReadLoad() {
-  //Get the resistance from the load
+  // Get the resistance from the load
   // Loop through relays to see which one is "on"
-  int load_i = 5;
   char message[100];
   for (int i = 15; i <= 21; i++) { // goes through pins 15-21
     int relayState = digitalRead(i);
-    if (relayState == HIGH) {
-      float resistance = resistor_list[load_i];
+    if (relayState == LOW) { // Changed from HIGH to LOW
+      float resistance = resistor_list[i-10];
       sprintf(message, "Current load resistance is %.2f", resistance);
       Serial.println(message);
       return resistance;
     }
-    load_i++;
   }
 
-  if (load_i == 11) {
-    Serial.println("Error: No relay is HIGH");
-  }
+  Serial.println("Error: No relay is LOW");
+  return -1; // Return an error value
 }
 
 void SetLoad(int wind_speed) {
+  // Validate wind_speed
+  if (wind_speed < 5 || wind_speed > 11) {
+    Serial.println("Error: Invalid wind speed");
+    return;
+  }
+
   // Set all the relays off
-  int load_i = 0;
   for (int i = 15; i <= 21; i++) { // goes through pins 15-21
-    digitalWrite(i, LOW);
+    digitalWrite(i, HIGH);
   }
 
   // Set the wanted one 'on' - windspeed can be 5-11, so this can write for pins 15-21
-  digitalWrite(10 + wind_speed, HIGH);
+  digitalWrite(wind_speed + 10, LOW);
 
-  char message[100];
-  sprintf(message, "Current load resistance is %.2f", resistor_list[wind_speed]);
-  Serial.println(message);
+  Serial.print("Current load resistance is ");
+  Serial.println(resistor_list[wind_speed]);
 }
 
 //Write data to the LCD screen
