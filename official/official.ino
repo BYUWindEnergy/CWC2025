@@ -1,12 +1,8 @@
-// Discuss:
-// - PCC : whether we need to add a delay / button
-
 // Libraries
 #include <Wire.h> //Default library (uses pinMode, etc.)
 #include <string.h> //Default library (for printing strings)
 #include <LiquidCrystal_I2C.h> //LiquidCrystal I2C by Frank de Brabander
 #include <Servo.h> //PWMServo by Jim Studt et al.
-//#include <Encoder.h> //Encoder by Paul Stoffregen
 
 //  Global constants for pins
 //  Analog pins
@@ -18,21 +14,10 @@
 //  PWM pins
 #define BRAKE_CONTROL 4
 #define PITCH_CONTROL 5
-//  Other pins
+
+//  Power pins
 #define POWER_SWITCH_RELAY 28
 #define E_BUTTON 44
-
-// Relay module switches for resistors
-#define E_BUTTON 44
-#define POWER_SWITCH_RELAY 28
-
-//Linear actuator global constants. For the PQ12-R, 1000 is fully extended and 2000 is fully retracted.
-//May be different depending on the model of linear actuator used.
-#define INITIAL_PITCH 1300
-#define MINIMUM_PITCH 1800
-#define MAXIMUM_PITCH 1300
-#define BRAKE_DISENGAGED 1450
-#define BRAKE_ENGAGED 1225
 
 // Voltage variables
 #define DISCONNECT_VOLTAGE 0.5
@@ -58,7 +43,7 @@ unsigned long previousMillis = 0;
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
 float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
-float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,500.0,600.0,700.0,800.0,900.0,1000.0,1100.0};
+float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1040.0,1410.0,1690.0,1970.0,2260.0,2540.0,2800.0,3000.0};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
@@ -201,8 +186,6 @@ void loop() {
         operatingState = survival;
       }
 
-      // previousTime = millis();
-
       break;
     }
 
@@ -241,7 +224,7 @@ void loop() {
         delay(1000);
         SetBrake(BRAKE_DISENGAGED);
         Serial.println("Disengaging brake...");
-        delay(5000); //I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
+        delay(5000); //ToDo: I think this delay needs to be increased, but we should test in the wind tunnel first. -Nathan
 
         //If we're getting an RPM reading, the load must be connected. Transition out
         if(ReadRPM() >= CUT_IN_RPM) {
@@ -335,7 +318,7 @@ void loop() {
     {
       //Brake and pitch out of the wind
       SetBrake(BRAKE_ENGAGED);
-      SetPitch(MINIMUM_PITCH); // MIGHT HAVE TO COMMENT OUT
+      SetPitch(MINIMUM_PITCH); // ToDo: MIGHT HAVE TO COMMENT OUT
       delay(3000);
       break;
     }
@@ -610,7 +593,9 @@ void loop() {
 
         //Set the load to the input value
         if(wind_speed >= 5 && wind_speed <= 11) {
-          SetLoad(wind_speed);
+          SetLoad(wind_speed);          
+          Serial.print("Set load to ");
+          Serial.println(resistor_list[wind_speed]);
         }
 
         //If the output is invalid, return to the test state
@@ -619,18 +604,13 @@ void loop() {
           break;
         }
 
-        //Print out the resistance value
-        // char message[100];
-        // sprintf(message, "Resistance set to %.2f Ohms", resistor_list[wind_speed]);
-        // Serial.println(message);
         break;
       }
 
       case read_load:
       {
-        char message[100];
-        sprintf(message, "Resistance is set to %.2f Ohms", ReadLoad());
-        Serial.println(message);
+        Serial.print("Resistance is currently ");
+        Serial.println(ReadLoad());
         break;
       }
 
@@ -709,8 +689,8 @@ void SetUpPins() {
   SetPowerMode(setExternal);
 
   // Relay module for load resistors
-  // Can define the pin numbers up top: 15=SW0, 21=SW6
-  for (int i = 15; i <= 21; i++) {
+  // Using odd pins 25-37, each correlate to a sw
+  for (int i = 25; i <= 37; i+=2) {
     pinMode(i, OUTPUT);
   }
 }
@@ -773,7 +753,7 @@ float ReadRPM() {
      unsigned long timeInterval = currentIndexTime - lastIndexTime;
      if (timeInterval > 0) {
        rpm = (60.0 * 1000000.0) / timeInterval;
-         Serial.println(rpm);
+        //  Serial.println(rpm);
      }
    }
   if (rpm > 4000) {
@@ -860,14 +840,10 @@ int ReadInputInt() {
 float ReadLoad() {
   // Get the resistance from the load
   // Loop through relays to see which one is "on"
-  char message[100];
-  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
+  for (int i = 25; i <= 37; i+=2) { // goes through pins 15-21
     int relayState = digitalRead(i);
-    if (relayState == LOW) { // Changed from HIGH to LOW
-      float resistance = resistor_list[i-10];
-      sprintf(message, "Current load resistance is %.2f", resistance);
-      Serial.println(message);
-      return resistance;
+    if (relayState == LOW) {
+      return resistor_list[(i - 25) / 2 + 5];;
     }
   }
 
@@ -876,22 +852,15 @@ float ReadLoad() {
 }
 
 void SetLoad(int wind_speed) {
-  // Validate wind_speed
-  if (wind_speed < 5 || wind_speed > 11) {
-    Serial.println("Error: Invalid wind speed");
-    return;
+  // Set the 'on' relay to 'off'
+  for (int i = 25; i <= 37; i+=2) {
+    if (digitalRead(i) == LOW) {
+      digitalWrite(i, HIGH);
+    }
   }
 
-  // Set all the relays off
-  for (int i = 15; i <= 21; i++) { // goes through pins 15-21
-    digitalWrite(i, HIGH);
-  }
-
-  // Set the wanted one 'on' - windspeed can be 5-11, so this can write for pins 15-21
-  digitalWrite(wind_speed + 10, LOW);
-
-  Serial.print("Current load resistance is ");
-  Serial.println(resistor_list[wind_speed]);
+  // Set the wanted one 'on' - windspeed can be 5-11,
+  digitalWrite(2 * wind_speed + 15, LOW);
 }
 
 //Write data to the LCD screen
@@ -977,7 +946,7 @@ void WriteToLCD() {
 
 //Selects a test state based on manual user input
 void SelectTest() {
-  Serial.print("Enter a desired test. Valid options: pwrsrc, brake, pitch, ptcalib, ptread, readpwr, readvolt, readrpm, setload,\n");
+  Serial.print("Enter a desired test. Valid options: pwrsrc, brake, pitch, readpwr, readvolt, readrpm, setload,\n");
   Serial.print("readload, ebutt, loaddis, survival, steadypwr, pwrcurve, exit\n");
 
   while(!Serial.available()){
