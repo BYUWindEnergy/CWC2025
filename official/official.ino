@@ -33,7 +33,7 @@ unsigned long previousMillis = 0;
 #define MAXIMUM_PITCH 1300
 #define SURVIVAL_PITCH 1600 //CHANGE THIS VALUE DURING CALIBRATION
 #define BRAKE_DISENGAGED 1450
-#define BRAKE_ENGAGED 1225
+#define BRAKE_ENGAGED 1300
 
 // Voltage divider constants
 #define DISCONNECT_VOLTAGE 0.5
@@ -42,7 +42,8 @@ unsigned long previousMillis = 0;
 
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
+float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50
+.0,60.0,70.0,80.0,90.0,100.0,110.0};
 float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1040.0,1410.0,1690.0,1970.0,2260.0,2540.0,2800.0,3000.0};
 
 // ToDo: might be able to erase bc of the rpm list
