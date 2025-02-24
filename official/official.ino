@@ -28,9 +28,9 @@ unsigned long previousMillis = 0;
 
 // Linear actuator constants
 // For the PQ12-R, 1000 is fully extended and 2000 is fully retracted.
-#define INITIAL_PITCH 1300
-#define MINIMUM_PITCH 1800
-#define MAXIMUM_PITCH 1300
+#define INITIAL_PITCH 1225
+#define MINIMUM_PITCH 2000 //1800
+#define MAXIMUM_PITCH 1225 //1300, 1225
 #define SURVIVAL_PITCH 1600 //CHANGE THIS VALUE DURING CALIBRATION
 #define BRAKE_DISENGAGED 1450
 #define BRAKE_ENGAGED 1300
@@ -42,14 +42,13 @@ unsigned long previousMillis = 0;
 
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50
-.0,60.0,70.0,80.0,90.0,100.0,110.0};
-float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1040.0,1410.0,1690.0,1970.0,2260.0,2540.0,2800.0,3000.0};
+float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
+float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1560.0,1900.0,2170.0,2540.0,2910.0,3248.0,3585.0};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 3000 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 4000 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
@@ -748,18 +747,30 @@ void indexISR() {
 float ReadRPM() {
   static float rpm = 0;
   static float prevRPM = 0;
+  static int noRPMcount = 0;
 
-   if (newRevolution) {
-     newRevolution = false;
-     unsigned long timeInterval = currentIndexTime - lastIndexTime;
-     if (timeInterval > 0) {
-       rpm = (60.0 * 1000000.0) / timeInterval;
-        //  Serial.println(rpm);
-     }
-   }
+  if (newRevolution) {
+    newRevolution = false;
+    unsigned long timeInterval = currentIndexTime - lastIndexTime;
+    if (timeInterval > 0) {
+      rpm = (60.0 * 1000000.0) / timeInterval;
+      noRPMcount = 0;
+      //  Serial.println(rpm);
+    }
+  } 
+  // else { // Trying to figure out the 0 rpm
+  //   noRPMcount++;
+  //   if (noRPMcount >= 50) { // Probably have to change this number:
+  //     rpm = 0.0;
+  //     noRPMcount = 0;
+  //   }
+  // }
+
+  // Disregards outliers
   if (rpm > 4000) {
     rpm = prevRPM;
   }
+
   prevRPM = rpm;
   return(rpm);
 }
