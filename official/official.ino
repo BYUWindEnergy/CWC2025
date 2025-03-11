@@ -28,10 +28,10 @@ unsigned long previousMillis = 0;
 
 // Linear actuator constants
 // For the PQ12-R, 1000 is fully extended and 2000 is fully retracted.
-#define INITIAL_PITCH 1225
+#define INITIAL_PITCH 1000
 #define MINIMUM_PITCH 2000 //1800
-#define MAXIMUM_PITCH 1225 //1300, 1225
-#define SURVIVAL_PITCH 1600 //CHANGE THIS VALUE DURING CALIBRATION
+#define MAXIMUM_PITCH 1000 //1300, 1225
+#define SURVIVAL_PITCH 1575 //CHANGE THIS VALUE DURING CALIBRATION
 #define BRAKE_DISENGAGED 1450
 #define BRAKE_ENGAGED 1300
 
