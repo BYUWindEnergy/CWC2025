@@ -17,6 +17,7 @@
 
 //  Power pins
 #define POWER_SWITCH_RELAY 28
+#define POWER_METER_RELAY 40
 #define E_BUTTON 44
 
 // Voltage variables
@@ -685,6 +686,7 @@ void SetUpPins() {
   //digitalWrite(E_BUTTON, HIGH); is e button continues not working, switch to setting up the pin this
   pinMode(VOLTAGE_SENSOR, INPUT);
   pinMode(POWER_SWITCH_RELAY, OUTPUT);
+  pinMode(POWER_METER_RELAY, OUTPUT);
   bool setExternal = true;
   SetPowerMode(setExternal);
 
@@ -702,6 +704,8 @@ void SetPowerMode(bool setExternal) {
   }
   else {
     digitalWrite(POWER_SWITCH_RELAY, LOW);
+    delay(3000);
+    digitalWrite(POWER_METER_RELAY, HIGH);
     powerSource = "Int";
   }
 }
