@@ -49,7 +49,7 @@ float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1560.0,1900.0,2170.0,2540.0,2910.0,3248.
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 4000 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 3800 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
