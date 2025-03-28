@@ -1,0 +1,25 @@
+Removed Pin From Net: NetName=NetBoxPwr_1 Pin=D1-2
+Added Component: Designator=D1(DIOD-DO-41-P-2_V)
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "Manufacturer URL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://diodes.com/"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "Datasheet"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "http://diodes.com/datasheets/ds28002.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "CT (pF)"; Value = "15"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "DatasheetVersion"; Value = "Rev. 8-2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Diodes Inc"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max. Average Rectified Current IO (A)"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max. IFSM (A)"; Value = "30"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max. IR (uA)"; Value = "5"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mounting Technology"; Value = "Through Hole"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Operating Temperature Range (degC)"; Value = "-65 to 150"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "2-Pin Axial Lead, Body 4.635 x 2.36 mm, Lead Spread 25.4 mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "DO-41-P-2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Packing"; Value = "Tape and Reel"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PartNumber"; Value = "1N4001-T"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "TRUE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "VF (V)"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "VRRM (V)"; Value = "50"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetBoxPwr_1 Pin=D1-1
+Added Pin To Net: NetName=NetD1_2 Pin=D1-2
+Added Pin To Net: NetName=NetD1_2 Pin=MotorPwr-1
+Added Net: Name=NetD1_2

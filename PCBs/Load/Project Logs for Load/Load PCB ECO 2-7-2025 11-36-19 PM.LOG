@@ -1,0 +1,13 @@
+Removed Member From Class: ClassName=Load Member=Arduino
+Added Component: Designator=Ardiuno(SAMTEC_MTMM-101-04-G-S-098)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/MTMM-101-04-G-S-098/Samtec/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Samtec"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "MTMM-101-04-G-S-098"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/MTMM-101-04-G-S-098/Samtec/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetArdiuno_01 Pin=Ardiuno-01
+Added Pin To Net: NetName=NetArdiuno_01 Pin=R1-1
+Added Pin To Net: NetName=NetArdiuno_01 Pin=R2-1
+Added Net: Name=NetArdiuno_01
+Added Member To Class: ClassName=Load Member=Component Ardiuno MTMM-101-04-G-S-098

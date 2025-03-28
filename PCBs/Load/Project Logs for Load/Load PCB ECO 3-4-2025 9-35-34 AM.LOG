@@ -1,0 +1,21 @@
+Removed Pin From Net: NetName=COM Pin=R1-2
+Change Component Designator: OldDesignator=Power NewDesignator=Turbine
+Added Pin To Net: NetName=COM Pin=R2-2
+Added Pin To Net: NetName=COM Pin=Turbine-2
+Change Net Name : Old Net Name=COM New Net Name=GND
+Added Pin To Net: NetName=COM Pin=R1-2
+Added Pin To Net: NetName=COM Pin=R5-1
+Added Pin To Net: NetName=COM Pin=R6-1
+Added Pin To Net: NetName=COM Pin=R7-1
+Added Pin To Net: NetName=COM Pin=R8-1
+Added Pin To Net: NetName=COM Pin=R9-1
+Added Pin To Net: NetName=COM Pin=R10-1
+Added Pin To Net: NetName=COM Pin=R11-1
+Added Pin To Net: NetName=COM Pin=SW0_5-3
+Added Pin To Net: NetName=COM Pin=SW1_6-3
+Added Pin To Net: NetName=COM Pin=SW2_7-3
+Added Pin To Net: NetName=COM Pin=SW3_8-3
+Added Pin To Net: NetName=COM Pin=SW4_9-3
+Added Pin To Net: NetName=COM Pin=SW5_10-3
+Added Pin To Net: NetName=COM Pin=SW6_11-3
+Added Net: Name=COM

@@ -1,0 +1,22 @@
+Output: Gerber X2 Files
+Type  : GerberX2
+From  : Variant [[No Variations]] of Project [NacelleV2.PrjPcb]
+   Generated File[NacelleV2.2_Copper_Signal_Top.gbr]
+   Generated File[NacelleV2.2_Copper_Signal_Bot.gbr]
+   Generated File[NacelleV2.2_Legend_Top.gbr]
+   Generated File[NacelleV2.2_Legend_Bot.gbr]
+   Generated File[NacelleV2.2_Soldermask_Top.gbr]
+   Generated File[NacelleV2.2_Soldermask_Bot.gbr]
+   Generated File[NacelleV2.2_Paste_Top.gbr]
+   Generated File[NacelleV2.2_Paste_Bot.gbr]
+   Generated File[NacelleV2.2_Profile.gbr]
+   Generated File[NacelleV2.2_NPTH_Drill.gbr]
+   Generated File[NacelleV2.2_PTH_Drill.gbr]
+   Generated File[NacelleV2.2.EXTREP]
+   Generated File[NacelleV2.2.REP]
+
+
+Files Generated   : 13
+Documents Printed : 0
+
+Finished Output Generation At 10:07:56 AM On 3/20/2025

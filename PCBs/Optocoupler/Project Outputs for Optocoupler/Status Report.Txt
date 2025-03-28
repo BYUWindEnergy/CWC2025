@@ -1,0 +1,22 @@
+Output: Gerber X2 Files
+Type  : GerberX2
+From  : Variant [[No Variations]] of Project [Optocoupler.PrjPcb]
+   Generated File[Optocoupler_Copper_Signal_Top.gbr]
+   Generated File[Optocoupler_Copper_Signal_Bot.gbr]
+   Generated File[Optocoupler_Legend_Top.gbr]
+   Generated File[Optocoupler_Legend_Bot.gbr]
+   Generated File[Optocoupler_Soldermask_Top.gbr]
+   Generated File[Optocoupler_Soldermask_Bot.gbr]
+   Generated File[Optocoupler_Paste_Top.gbr]
+   Generated File[Optocoupler_Paste_Bot.gbr]
+   Generated File[Optocoupler_Profile.gbr]
+   Generated File[Optocoupler_NPTH_Drill.gbr]
+   Generated File[Optocoupler_PTH_Drill.gbr]
+   Generated File[Optocoupler.EXTREP]
+   Generated File[Optocoupler.REP]
+
+
+Files Generated   : 13
+Documents Printed : 0
+
+Finished Output Generation At 9:29:32 AM On 11/25/2024

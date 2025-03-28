@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=Brake Pin=HDMI-3
+Removed Pin From Net: NetName=Pitch Pin=HDMI-4
+Added Pin To Net: NetName=Pitch Pin=HDMI-3
+Added Pin To Net: NetName=Brake Pin=HDMI-4
+Added Member To Class: ClassName=NacelleV2 Member=Component Encoder 61300311121

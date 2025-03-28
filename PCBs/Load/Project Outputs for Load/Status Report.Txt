@@ -1,0 +1,22 @@
+Output: Gerber X2 Files
+Type  : GerberX2
+From  : Variant [[No Variations]] of Project [Load.PrjPcb]
+   Generated File[LoadMix_Copper_Signal_Top.gbr]
+   Generated File[LoadMix_Copper_Signal_Bot.gbr]
+   Generated File[LoadMix_Legend_Top.gbr]
+   Generated File[LoadMix_Legend_Bot.gbr]
+   Generated File[LoadMix_Soldermask_Top.gbr]
+   Generated File[LoadMix_Soldermask_Bot.gbr]
+   Generated File[LoadMix_Paste_Top.gbr]
+   Generated File[LoadMix_Paste_Bot.gbr]
+   Generated File[LoadMix_Profile.gbr]
+   Generated File[LoadMix_NPTH_Drill.gbr]
+   Generated File[LoadMix_PTH_Drill.gbr]
+   Generated File[LoadMix.EXTREP]
+   Generated File[LoadMix.REP]
+
+
+Files Generated   : 13
+Documents Printed : 0
+
+Finished Output Generation At 10:09:11 AM On 3/20/2025

@@ -30,9 +30,9 @@ unsigned long previousMillis = 0;
 // Linear actuator constants
 // For the PQ12-R, 1000 is fully extended and 2000 is fully retracted.
 #define INITIAL_PITCH 1000
-#define MINIMUM_PITCH 2000 //1800
+#define MINIMUM_PITCH 1550 //1800
 #define MAXIMUM_PITCH 1000 //1300, 1225
-#define SURVIVAL_PITCH 1575 //CHANGE THIS VALUE DURING CALIBRATION
+#define SURVIVAL_PITCH 1550 //CHANGE THIS VALUE DURING CALIBRATION
 #define BRAKE_DISENGAGED 1450
 #define BRAKE_ENGAGED 1300
 
@@ -958,6 +958,12 @@ void WriteToLCD() {
   lcd.setCursor(10, 3);
   lcd.print("Src: ");
   lcd.print(powerSource);
+
+  // lambda chart variables
+  // Serial.print("RPM: ");
+  // Serial.println(currentRPM);
+  // Serial.print("Volt: ");
+  // Serial.println(ReadVoltage());
 }
 
 //Selects a test state based on manual user input
