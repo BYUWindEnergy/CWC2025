@@ -17,6 +17,7 @@
 
 //  Power pins
 #define POWER_SWITCH_RELAY 28
+#define POWER_METER_RELAY 40
 #define E_BUTTON 44
 
 // Voltage variables
@@ -28,10 +29,10 @@ unsigned long previousMillis = 0;
 
 // Linear actuator constants
 // For the PQ12-R, 1000 is fully extended and 2000 is fully retracted.
-#define INITIAL_PITCH 1225
-#define MINIMUM_PITCH 2000 //1800
-#define MAXIMUM_PITCH 1225 //1300, 1225
-#define SURVIVAL_PITCH 1600 //CHANGE THIS VALUE DURING CALIBRATION
+#define INITIAL_PITCH 1000
+#define MINIMUM_PITCH 1550 //1800
+#define MAXIMUM_PITCH 1000 //1300, 1225
+#define SURVIVAL_PITCH 1550 //CHANGE THIS VALUE DURING CALIBRATION
 #define BRAKE_DISENGAGED 1450
 #define BRAKE_ENGAGED 1300
 
@@ -42,7 +43,7 @@ unsigned long previousMillis = 0;
 
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
+float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,35.17,38.3,36.7,34.2,16.6,16.6,17.4};
 float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1560.0,1900.0,2170.0,2540.0,2910.0,3248.0,3585.0};
 
 // ToDo: might be able to erase bc of the rpm list
@@ -273,7 +274,7 @@ void loop() {
         SetLoad(5);
         currentWindSpeed = 5;
       } else if (rpm >= rpm_list[6] && rpm < rpm_list[7]) {
-        SetLoad(6);
+        SetLoad(9);
         currentWindSpeed = 6;
       } else if (rpm >= rpm_list[7] && rpm < rpm_list[8]) {
         SetLoad(7);
@@ -282,10 +283,10 @@ void loop() {
         SetLoad(8);
         currentWindSpeed = 8;
       } else if (rpm >= rpm_list[9] && rpm < rpm_list[10]) {
-        SetLoad(9);
+        SetLoad(6);
         currentWindSpeed = 9;
       } else if (rpm >= rpm_list[10] && rpm < rpm_list[11]) {
-        SetLoad(10);
+        SetLoad(6);
         currentWindSpeed = 10;
       } else if (rpm >= rpm_list[11]) {
         SetLoad(11);
@@ -685,6 +686,7 @@ void SetUpPins() {
   //digitalWrite(E_BUTTON, HIGH); is e button continues not working, switch to setting up the pin this
   pinMode(VOLTAGE_SENSOR, INPUT);
   pinMode(POWER_SWITCH_RELAY, OUTPUT);
+  pinMode(POWER_METER_RELAY, OUTPUT);
   bool setExternal = true;
   SetPowerMode(setExternal);
 
@@ -703,6 +705,8 @@ void SetPowerMode(bool setExternal) {
   else {
     digitalWrite(POWER_SWITCH_RELAY, LOW);
     powerSource = "Int";
+    delay(3000);
+    digitalWrite(POWER_METER_RELAY, HIGH);
   }
 }
 
