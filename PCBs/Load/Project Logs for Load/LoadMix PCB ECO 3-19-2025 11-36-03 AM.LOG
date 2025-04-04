@@ -1,0 +1,24 @@
+Removed Member From Class: ClassName=LoadMix Member=Ardiuno
+Added Component: Designator=Arduino(PHOENIX_1706730)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Component Type"; Value = "Standard"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Design Item ID"; Value = "1706730"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "{'manufacturer': u'Phoenix Contact'}"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "1706730"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pin Count"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Source"; Value = "1706730.SchLib"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetArduino_1_1 Pin=Arduino-1_1
+Added Pin To Net: NetName=NetArduino_1_1 Pin=R1-1
+Added Net: Name=NetArduino_1_1
+Added Pin To Net: NetName=NetArduino_1_2 Pin=Arduino-1_2
+Added Pin To Net: NetName=NetArduino_1_2 Pin=R2-1
+Added Net: Name=NetArduino_1_2
+Added Member To Class: ClassName=LoadMix Member=Component Arduino 1706730
+Added Member To Class: ClassName=LoadMix Member=Component R5_1 TEH100M50R0FE
+Added Member To Class: ClassName=LoadMix Member=Component R5_2 TEH100M50R0FE
+Added Member To Class: ClassName=LoadMix Member=Component R5_3 TEH100M50R0FE
+Added Member To Class: ClassName=LoadMix Member=Component R6_1 MTMM-101-04-G-S-098
+Added Member To Class: ClassName=LoadMix Member=Component R6_2 MTMM-101-04-G-S-098

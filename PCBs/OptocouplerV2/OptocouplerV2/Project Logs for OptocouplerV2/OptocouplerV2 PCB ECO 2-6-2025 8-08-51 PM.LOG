@@ -1,0 +1,48 @@
+Removed Pin From Net: NetName=NetArduino_1 Pin=Arduino-1
+Removed Pin From Net: NetName=NetArduino_2 Pin=Arduino-2
+Removed Pin From Net: NetName=NetArduino_3 Pin=Arduino-3
+Removed Pin From Net: NetName=5V_In Pin=Oct2-7
+Removed Pin From Net: NetName=NetArduino_3 Pin=Oct2-8
+Removed Pin From Net: NetName=GND Pin=Power-1
+Removed Pin From Net: NetName=5V_In Pin=Power-2
+Removed Pin From Net: NetName=GND Pin=Q1-1
+Removed Pin From Net: NetName=NetHDMI_2 Pin=Q1-2
+Removed Pin From Net: NetName=NetHDMI_3 Pin=Q2-2
+Removed Pin From Net: NetName=NetHDMI_1 Pin=R4-1
+Removed Pin From Net: NetName=GND Pin=R5-2
+Removed Member From Class: ClassName=Optocoupler Member=Q2
+Removed Member From Class: ClassName=Optocoupler Member=R5
+Removed Member From Class: ClassName=Optocoupler Member=R6
+Change Component Designator: OldDesignator=Q2 NewDesignator=Q1
+Change Component Designator: OldDesignator=R6 NewDesignator=R4
+Added Component: Designator=Arduino(TE_1985205)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/1985205/Phoenix+Contact/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Component Type"; Value = "Standard"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Design Item ID"; Value = "1985205"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Phoenix Contact"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "1985205"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pin Count"; Value = "3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/1985205/Phoenix+Contact/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Source"; Value = "1985205.SchLib"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Power(PHOENIX_1984963)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Component Type"; Value = "Standard"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Design Item ID"; Value = "1984963"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "1984963"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pin Count"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Source"; Value = "1984963.SchLib"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetArduino_1 Pin=Arduino-1
+Added Pin To Net: NetName=NetArduino_2 Pin=Arduino-2
+Added Pin To Net: NetName=NetArduino_3 Pin=Arduino-3
+Added Pin To Net: NetName=NetHDMI_3 Pin=Oct1-8
+Added Pin To Net: NetName=NetArduino_3 Pin=Oct2-5
+Added Pin To Net: NetName=GND Pin=Power-1
+Added Pin To Net: NetName=5V_In Pin=Power-2
+Added Pin To Net: NetName=NetHDMI_2 Pin=Q1-2
+Added Pin To Net: NetName=NetHDMI_3 Pin=R2-1
+Change Class Name : Old Net Name=Optocoupler New Net Name=OptocouplerV2

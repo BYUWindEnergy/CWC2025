@@ -1,0 +1,30 @@
+Orders List
+
+Mouser:
+1ohm resistor: $6.17
+https://www.mouser.com/ProductDetail/Vishay-Sfernice/LTO050F1R000JTE3?qs=YEvEAkYMKXvrv2epaW4eRA%3D%3D
+2.2ohm resistor: $7.14 x2
+https://www.mouser.com/ProductDetail/Vishay-Sfernice/LTO050F2R200JTE3?qs=YEvEAkYMKXvIj23azLEJqA%3D%3D
+4.7ohm resistor: $7.36
+https://www.mouser.com/ProductDetail/Vishay-Sfernice/LTO050F4R700JTE3?qs=YEvEAkYMKXv%252BVS62fCGPKg%3D%3D
+10ohm resistor: $6.19 x2
+https://www.mouser.com/ProductDetail/Ohmite/AP851-10R-F?qs=ZICBS%2FMUCuULBmVMoqnbiQ%3D%3D
+22ohm resistor: $9.22 x2
+https://www.mouser.com/ProductDetail/Vishay-Sfernice/LTO050F22R00FTE3?qs=5CPmOFQqFNpKulvKxNqzbA%3D%3D
+47ohm resistor: $9.23 
+https://www.mouser.com/ProductDetail/Vishay-Sfernice/LTO050F47R00FTE3?qs=5CPmOFQqFNrw%252B3MKqZQQyA%3D%3D
+100ohm resistor: $5.23
+https://www.mouser.com/ProductDetail/Bourns/PWR221T-50-1000F?qs=fHAk5VQYflc1BYhgNZglVQ%3D%3D
+
+16.6ohm resistor: $16.89
+https://www.mouser.com/ProductDetail/TE-Connectivity-Holsworthy/HSC10016R6J?qs=DfH2yQaBz6tmSImkCLrplw%3D%3D
+17.4 ohm resistor: $12.26
+https://www.mouser.com/ProductDetail/Vishay-Dale/RH05017R40FE02?qs=sGAEpiMZZMvNd0dY0Kymzt%2F6tSZyWZiRfeF8oVV8V%2Fc%3D
+38.3 ohm resistor: $14.92
+https://www.mouser.com/ProductDetail/Vishay-Dale/RH05038R30FC02?qs=sGAEpiMZZMvNd0dY0Kymznz%2FzbWwLvuhweogQB1912o%3D
+
+1Pos terminal block: $0.73
+https://www.mouser.com/ProductDetail/Phoenix-Contact/1706730?qs=Hp4IEBVVqKLiXJ9E4Q5I4w%3D%3D
+2pos terminal block: $0.992 x10
+https://www.mouser.com/ProductDetail/Phoenix-Contact/1729018?qs=cq3Rj917t3kvawwx9wVa9g%3D%3D
+

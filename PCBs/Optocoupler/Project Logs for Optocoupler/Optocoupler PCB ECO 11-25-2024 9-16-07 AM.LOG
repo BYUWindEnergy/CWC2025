@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=NetOct2_2 Pin=Q1-2
+Removed Pin From Net: NetName=NetHDMI_2 Pin=Q1-3
+Removed Pin From Net: NetName=NetOct2_3 Pin=Q2-2
+Removed Pin From Net: NetName=NetHDMI_3 Pin=Q2-3
+Added Pin To Net: NetName=NetHDMI_2 Pin=Q1-2
+Added Pin To Net: NetName=NetOct2_2 Pin=Q1-3
+Added Pin To Net: NetName=NetHDMI_3 Pin=Q2-2
+Added Pin To Net: NetName=NetOct2_3 Pin=Q2-3

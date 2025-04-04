@@ -1,0 +1,8 @@
+Change Component Designator: OldDesignator=R5 NewDesignator=R9.10
+Change Component Designator: OldDesignator=R7 NewDesignator=R11
+Added Member To Class: ClassName=LoadMix Member=Component R6_1 61300111121
+Added Member To Class: ClassName=LoadMix Member=Component R6_2 61300111121
+Added Member To Class: ClassName=LoadMix Member=Component R9.10_1 61300111121
+Added Member To Class: ClassName=LoadMix Member=Component R9.10_2 61300111121
+Added Member To Class: ClassName=LoadMix Member=Component R11_1 61300111121
+Added Member To Class: ClassName=LoadMix Member=Component R11_2 61300111121

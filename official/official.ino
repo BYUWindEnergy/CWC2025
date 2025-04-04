@@ -704,6 +704,8 @@ void SetPowerMode(bool setExternal) {
   }
   else {
     digitalWrite(POWER_SWITCH_RELAY, LOW);
+    delay(3000);
+    digitalWrite(POWER_METER_RELAY, HIGH);
     powerSource = "Int";
     delay(3000);
     digitalWrite(POWER_METER_RELAY, HIGH);
@@ -958,6 +960,12 @@ void WriteToLCD() {
   lcd.setCursor(10, 3);
   lcd.print("Src: ");
   lcd.print(powerSource);
+
+  // lambda chart variables
+  // Serial.print("RPM: ");
+  // Serial.println(currentRPM);
+  // Serial.print("Volt: ");
+  // Serial.println(ReadVoltage());
 }
 
 //Selects a test state based on manual user input

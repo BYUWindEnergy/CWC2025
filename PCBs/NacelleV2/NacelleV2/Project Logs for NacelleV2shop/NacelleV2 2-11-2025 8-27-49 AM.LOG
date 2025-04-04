@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=Encoder Pin=HDMI-2
+Removed Pin From Net: NetName=Pitch Pin=HDMI-4
+Added Pin To Net: NetName=Pitch Pin=HDMI-2
+Added Pin To Net: NetName=Encoder Pin=HDMI-4

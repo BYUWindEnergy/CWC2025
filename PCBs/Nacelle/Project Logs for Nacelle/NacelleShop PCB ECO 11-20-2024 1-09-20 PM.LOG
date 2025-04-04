@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=NetBoxPwr_1 Pin=D1-1
+Added Pin To Net: NetName=NetBoxPwr_1 Pin=D1-2
+Added Pin To Net: NetName=NetD1_1 Pin=D1-1
+Added Pin To Net: NetName=NetD1_1 Pin=MotorPwr-1
+Added Net: Name=NetD1_1
+Added Member To Class: ClassName=Nacelle_sch Member=Component BoxPwr 691213710002
+Added Member To Class: ClassName=Nacelle_sch Member=Component MotorPwr 691213710002

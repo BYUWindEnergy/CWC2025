@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=NetHDMI_4 Pin=Oct1-5
+Removed Pin From Net: NetName=NetHDMI_2 Pin=Q1-2
+Removed Pin From Net: NetName=NetHDMI_4 Pin=R1-1
+Added Pin To Net: NetName=NetHDMI_2 Pin=Oct1-5
+Added Pin To Net: NetName=NetHDMI_4 Pin=Q1-2
+Added Pin To Net: NetName=NetHDMI_2 Pin=R1-1
+Added Member To Class: ClassName=OptocouplerV2 Member=Component Arduino 1985205
+Added Member To Class: ClassName=OptocouplerV2 Member=Component Power 1984963
+Added Member To Class: ClassName=OptocouplerV2 Member=Component Q1
+Added Member To Class: ClassName=OptocouplerV2 Member=Component R4
