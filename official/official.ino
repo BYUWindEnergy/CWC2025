@@ -44,7 +44,7 @@ unsigned long previousMillis = 0;
 // Resistor and rpm lists
 // wind speed = {0,1,2,3,4,5,9-10,7,8,6,11};
 float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,36.1,17.5,39.2,39.2,39.2,18.3};
-float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,5.0,1150.0,1550.0,1724.0,2237.0,1995.0,2510.0,2800.0};
+float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,5.0,1150.0,1550.0,1724.0,2237.0,1995.0,2510.0,2750.0};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
