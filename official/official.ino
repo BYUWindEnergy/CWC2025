@@ -105,7 +105,7 @@ typedef enum {
 testStateMachine testState = test_select;
 
 void setup() {
-  Serial.begin(9600);  // Set baud rate to 9600 bit/s
+  Serial.begin(19200);  // Set baud rate to 11200 bit/s
 
   //  Setup functions
   SetUpPins();
@@ -130,6 +130,11 @@ void setup() {
 }
 
 void loop() {
+  Serial.print("RPM: ");
+  Serial.println(ReadRPM());
+  Serial.print("Power: ");
+  Serial.println(CalculatePower());
+
   static bool testing = false; // variable to switch into testing state machine
 
   // Update the LCD screen
