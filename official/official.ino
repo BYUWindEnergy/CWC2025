@@ -42,14 +42,14 @@ unsigned long previousMillis = 0;
 #define LARGE_READER_RESISTOR 390000.0 // check these values
 
 // Resistor and rpm lists
-// wind speed = {0,1,2,3,4,5,6,7,8,9,10,11};
-float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,50.0,60.0,70.0,80.0,90.0,100.0,110.0};
-float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,1560.0,1900.0,2170.0,2540.0,2910.0,3248.0,3585.0};
+// wind speed = {0,1,2,3,4,5,9-10,7,8,6,11};
+float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,36.1,17.5,39.2,39.2,39.2,18.3};
+float rpm_list[] = {5.0,5.0,5.0,5.0,5.0,5.0,1150.0,1550.0,1724.0,2237.0,1995.0,2510.0,2800.0};
 
 // ToDo: might be able to erase bc of the rpm list
 // Transition RPM values
 #define CUT_IN_RPM 300 //By my calculations, our cutin rpm should be closer to 350. -Nathan
-#define SURVIVAL_RPM 3800 // CHANGE THIS DURING CALIBRATION
+#define SURVIVAL_RPM 2750 // CHANGE THIS DURING CALIBRATION
 #define SURVIVAL_EXIT_RPM 400 // TESTING THIS VARIABLE
 
 //Arduino Mega global constants
@@ -270,29 +270,27 @@ void loop() {
       // Set the load depending on the rpm reading
       // The numbers correlate to the wind speed - resistor value
       float rpm = ReadRPM();
-      if (rpm < rpm_list[6]) {
-        SetLoad(5);
-        currentWindSpeed = 5;
-      } else if (rpm >= rpm_list[6] && rpm < rpm_list[7]) {
-        SetLoad(6);
-        currentWindSpeed = 6;
-      } else if (rpm >= rpm_list[7] && rpm < rpm_list[8]) {
-        SetLoad(7);
-        currentWindSpeed = 7;
-      } else if (rpm >= rpm_list[8] && rpm < rpm_list[9]) {
-        SetLoad(8);
-        currentWindSpeed = 8;
-      } else if (rpm >= rpm_list[9] && rpm < rpm_list[10]) {
+      // float resistor_list[] = {5.0,5.0,5.0,5.0,5.0,36.1,17.5,39.2,39.2,39.2,18.3};
+// float rpm_list[] = {0.0,1.0,2.0,3.0,4.0,5.0,1150.0,1550.0,1724.0,2237.0,1995.0,2510.0,2800.0};
+//                                              6       7     8       9     10      11      survival
+      if (rpm >= rpm_list[6] && (ReadLoad() == 36.1)) {
         SetLoad(9);
+        currentWindSpeed = 6;
+      } else if (rpm >= rpm_list[7] && (currentWindSpeed == 6)) {
+        SetLoad(9);
+        currentWindSpeed = 7;
+      } else if (rpm >= rpm_list[8] && (currentWindSpeed == 7)) {
+        SetLoad(9);
+        currentWindSpeed = 8;
+      } else if (rpm >= rpm_list[9] && (currentWindSpeed == 8)) {
+        SetLoad(6);
         currentWindSpeed = 9;
-      } else if (rpm >= rpm_list[10] && rpm < rpm_list[11]) {
-        SetLoad(10);
+      } else if (rpm >= rpm_list[10] && (currentWindSpeed == 9)) {
+        SetLoad(6);
         currentWindSpeed = 10;
-      } else if (rpm >= rpm_list[11]) {
-        SetLoad(11);
+      } else if (rpm >= rpm_list[11] && (currentWindSpeed == 10)) {
+        SetLoad(10);
         currentWindSpeed = 11;
-      } else {
-        SetLoad(11); // Set to 11 to have the highest resistance in case something goes wrong
       }
 
       //Change power to internal
@@ -707,6 +705,8 @@ void SetPowerMode(bool setExternal) {
     delay(3000);
     digitalWrite(POWER_METER_RELAY, HIGH);
     powerSource = "Int";
+    delay(3000);
+    digitalWrite(POWER_METER_RELAY, HIGH);
   }
 }
 
@@ -730,9 +730,9 @@ void SetUpLoad() {
   SetLoad(5); // 5m/s resistor
 }
 
-//Reads whether the emergency stop button is pressed. Returns true if pressed, false if not
+//Reads whether the emergency stop button is pressed. Returns false if pressed, true if not
 bool IsButtonPressed() {
-  return digitalRead(E_BUTTON);
+  return !digitalRead(E_BUTTON);
 }
 
 // Variables for the ReadRPM
@@ -859,7 +859,7 @@ float ReadLoad() {
   for (int i = 25; i <= 37; i+=2) { // goes through pins 15-21
     int relayState = digitalRead(i);
     if (relayState == LOW) {
-      return resistor_list[(i - 25) / 2 + 5];;
+      return resistor_list[(i - 25) / 2 + 5];
     }
   }
 
